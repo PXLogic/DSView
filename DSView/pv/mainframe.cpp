@@ -1131,8 +1131,13 @@ bool MainFrame::nativeEvent(const QByteArray &eventType, void *message, long *re
     } 
     
 #endif
- 
+
+#ifdef Q_OS_DARWIN
+    return QWidget::nativeEvent(eventType, message, (long long *)result);
+#else
     return QWidget::nativeEvent(eventType, message, result);
+#endif
+    //return QWidget::nativeEvent(eventType, message, (long long *)result);
 }
 
 } // namespace pv

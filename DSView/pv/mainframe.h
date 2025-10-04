@@ -114,7 +114,11 @@ protected:
 
     void changeEvent(QEvent *event) override; 
 
+#ifdef Q_OS_DARWIN
+    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+#else
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+#endif
  
 signals:
     void sig_ParentNativeEvent(int msg);

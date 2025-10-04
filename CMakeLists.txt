@@ -692,8 +692,8 @@ if(APPLE)
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_GUI_IDENTIFIER com.pxlogic.${PROJECT_NAME}
         MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
-        MACOSX_BUNDLE_BUNDLE_VERSION ${PX_VERSION_STRING}
-        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PX_VERSION_STRING}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${DS_VERSION_STRING}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${DS_VERSION_STRING}
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/mac_appbundle_template.plist.in
         MACOSX_BUNDLE_ICON_FILE DSView.icns
     )
@@ -719,15 +719,15 @@ if(APPLE)
     set(MAC_RES_PREFIX ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app/Contents/Resources/)
 
     # Adding icon via add_executable / target_sources does not work, hack around this
-    install(FILES PXView.icns DESTINATION ${MAC_RES_PREFIX})
+    install(FILES DSView.icns DESTINATION ${MAC_RES_PREFIX})
 else()
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 endif()
-install(DIRECTORY DSView/res DESTINATION share/DSView)
-install(DIRECTORY DSView/demo DESTINATION share/DSView)
-install(FILES DSView/icons/logo.svg DESTINATION share/DSView RENAME logo.svg)
-install(FILES DSView/icons/logo.svg DESTINATION share/icons/hicolor/scalable/apps RENAME dsview.svg)
-install(FILES DSView/icons/logo.svg DESTINATION share/pixmaps RENAME dsview.svg)
+install(DIRECTORY DSView/res DESTINATION ${MAC_RES_PREFIX}share/DSView)
+install(DIRECTORY DSView/demo DESTINATION ${MAC_RES_PREFIX}share/DSView)
+install(FILES DSView/icons/logo.svg DESTINATION ${MAC_RES_PREFIX}share/DSView RENAME logo.svg)
+install(FILES DSView/icons/logo.svg DESTINATION ${MAC_RES_PREFIX}share/icons/hicolor/scalable/apps RENAME dsview.svg)
+install(FILES DSView/icons/logo.svg DESTINATION ${MAC_RES_PREFIX}share/pixmaps RENAME dsview.svg)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")	
 	install(FILES DSView/DSView.desktop DESTINATION /usr/share/applications RENAME dsview.desktop)
@@ -744,13 +744,13 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 endif()
 
-install(FILES NEWS25 DESTINATION share/DSView RENAME NEWS25)
-install(FILES NEWS31 DESTINATION share/DSView RENAME NEWS31)
-install(FILES ug25.pdf DESTINATION share/DSView RENAME ug25.pdf)
-install(FILES ug31.pdf DESTINATION share/DSView RENAME ug31.pdf)
+install(FILES NEWS25 DESTINATION ${MAC_RES_PREFIX}share/DSView RENAME NEWS25)
+install(FILES NEWS31 DESTINATION ${MAC_RES_PREFIX}share/DSView RENAME NEWS31)
+install(FILES ug25.pdf DESTINATION ${MAC_RES_PREFIX}share/DSView RENAME ug25.pdf)
+install(FILES ug31.pdf DESTINATION ${MAC_RES_PREFIX}share/DSView RENAME ug31.pdf)
 
-install(DIRECTORY libsigrokdecode4DSL/decoders DESTINATION share/libsigrokdecode4DSL)
-install(DIRECTORY lang DESTINATION share/DSView)
+install(DIRECTORY libsigrokdecode4DSL/decoders DESTINATION ${MAC_RES_PREFIX}share/libsigrokdecode4DSL)
+install(DIRECTORY lang DESTINATION ${MAC_RES_PREFIX}share/DSView)
 
 #===============================================================================
 #= Packaging (handled by CPack)

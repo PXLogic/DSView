@@ -478,16 +478,23 @@ QString GetAppDataDir()
 #else
 
 #ifdef Q_OS_DARWIN
+    // QDir dir1(QCoreApplication::applicationDirPath());
+    // //"./res" is not exists
+    // if (dir1.cd("res") == false){
+    //     QDir dir(QCoreApplication::applicationDirPath());
+    //     // ../share/DSView
+    //     if (dir.cd("..") && dir.cd("share") && dir.cd("DSView"))
+    //     {
+    //         return dir.absolutePath();
+    //     }
+    // }
+
     QDir dir1(QCoreApplication::applicationDirPath());
-    //"./res" is not exists
-    if (dir1.cd("res") == false){
-        QDir dir(QCoreApplication::applicationDirPath());
-        // ../share/DSView
-        if (dir.cd("..") && dir.cd("share") && dir.cd("DSView"))
-        {
-            return dir.absolutePath();
-        }
+    // "../Resources/share/DSView"
+    if (dir1.cd("..") && dir1.cd("Resources") && dir1.cd("share") && dir1.cd("DSView")){
+        return dir1.absolutePath();
     }
+
 #endif
 
     // The bin location
@@ -510,6 +517,14 @@ QString GetFirmwareDir()
          return dir.absolutePath();
     }
  
+#ifdef Q_OS_DARWIN
+    // macOS bundle (../Resources/share/PXView/res)
+    if (dir.cd("..") && dir.cd("Resources") && dir.cd("share") && dir.cd("DSView") && dir.cd("res"))
+    {
+         return dir.absolutePath();
+    }
+#endif
+
     dsv_err("%s%s", "Resource directory is not exists:", dir1.absolutePath().toUtf8().data());
     return dir1.absolutePath();
 }
@@ -534,12 +549,30 @@ QString GetDecodeScriptDir()
          return path;     QColor GetStyleColor();
     }
 
+    // QDir dir(QCoreApplication::applicationDirPath());
+    // if (dir.cd("..") && dir.cd("share") && dir.cd("libsigrokdecode4DSL") && dir.cd("decoders"))
+    // {
+    //      return dir.absolutePath();        
+    // }
+
+#ifdef Q_OS_DARWIN
+    dir1.cd(QCoreApplication::applicationDirPath());
+    //if (dir1.cd("..") && dir1.cd("Resources") && dir1.cd("share") && dir1.cd("DSView") &&
+    if (dir1.cd("..") && dir1.cd("Resources") && dir1.cd("share") &&
+        dir1.cd("libsigrokdecode4DSL") && dir1.cd("decoders"))
+    {
+         return dir1.absolutePath();
+    }
+
+#elif defined(Q_OS_UNIX)
     QDir dir(QCoreApplication::applicationDirPath());
-    // ../share/libsigrokdecode4DSL/decoders
+    // ../share/PXView/libsigrokdecode4DSL/decoders
+    //if (dir.cd("..") && dir.cd("share")&& dir.cd("PXView")  && dir.cd("libsigrokdecode4DSL") && dir.cd("decoders"))
     if (dir.cd("..") && dir.cd("share") && dir.cd("libsigrokdecode4DSL") && dir.cd("decoders"))
     {
-         return dir.absolutePath();        
+        return dir.absolutePath();        
     }
+#endif
     return "";
 }
 
